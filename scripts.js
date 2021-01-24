@@ -1,6 +1,6 @@
 window.onload = (event) => {
   ;(function () {
-    Array.from(document.querySelectorAll('.arrow')).forEach((item) => {
+    Array.from(document.querySelectorAll('.warningWrapper')).forEach((item) => {
       item.addEventListener(
         'click',
         function () {
