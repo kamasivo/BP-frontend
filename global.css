@@ -3,3 +3,20 @@ main {
   padding-left: 5%;
   padding-right: 5%;
 }
+.dropdown-content {
+  display: none;
+}
+.warningWrapper {
+  transition: 0.6s;
+}
+.warningWrapper.open {
+  background-color: #dadada;
+}
+.warningWrapper.open .dropdown-content {
+  display: flex;
+}
+.warningWrapper.open .arrow {
+  filter: invert(0.2) sepia(1) saturate(1.2) hue-rotate(0deg) brightness(0.3);
+  transform: rotate(180deg);
+  transition: 0.6s;
+}
