@@ -7,6 +7,7 @@
 .warningWrapper {
   border-radius: 11px;
   background-color: #f72e1f;
+  cursor: pointer;
 }
 .warningWrapper.open .dropdown-content {
   display: flex;
