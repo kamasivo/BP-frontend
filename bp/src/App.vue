@@ -1,5 +1,4 @@
 <template>
-  <font-awesome-icon icon="user-secret" />
   <Head />
   <Nav />
 </template>

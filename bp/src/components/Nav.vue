@@ -2,16 +2,24 @@
   <nav class="navbar navbar-expand-md navbar-dark  bg-dark">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <router-link class="nav-link" to="/">Home</router-link>
+        <router-link :active="isActive" class="nav-link" to="/"
+          >Home</router-link
+        >
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" to="/statistics">Statistics</router-link>
+        <router-link :active="isActive" class="nav-link" to="/statistics"
+          >Statistics</router-link
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/vulnerabilities">Vulnerabilities</a>
+        <router-link :active="isActive" class="nav-link" to="/vulnerabilities">
+          Vulnerabilities
+        </router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/profile">Profile</a>
+        <router-link :active="isActive" class="nav-link" to="/profile"
+          >profile</router-link
+        >
       </li>
     </ul>
     <div class="mt-2 mt-md-0">
@@ -20,3 +28,9 @@
   </nav>
   <router-view />
 </template>
+
+<style scoped>
+.router-link-active {
+  color: white !important;
+}
+</style>
