@@ -1,32 +1,22 @@
 <template>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="index.html">Home</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="statistics.html">Statistics </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="vulnerabilities.html">Vulnerabilities</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="greyList.html">Grey list</a>
-          </li>
-        </ul>
-        <div class="mt-2 mt-md-0">
-          <h2 class="mb-0 text-white">ROUTER</h2>
-        </div>
-      </div>
-    </nav>
-    </template>
+  <nav class="navbar navbar-expand-md navbar-dark  bg-dark">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Home</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/statistics">Statistics</router-link>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/vulnerabilites">Vulnerebilities</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/profile">Profile</a>
+      </li>
+    </ul>
+    <div class="mt-2 mt-md-0">
+      <h2 class="mb-0 text-white">ROUTER</h2>
+    </div>
+  </nav>
+  <router-view />
+</template>
