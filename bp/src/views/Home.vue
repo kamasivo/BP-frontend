@@ -6,7 +6,9 @@
     >
       <h4 class="alert-heading mb-0">All safe!</h4>
     </div>
-    <div class="warningWrapper mt-3">
+    <div class="warningWrapper mt-3" v-bind:class="{ open: showMore }"
+ v-on:click="showMore = !showMore"
+>
       <div class="d-flex align-items-center pt-2 pb-2">
         <h2 class="ml-3 mt-2 text-white">
           WARNING - [DEVICE NAME] has vulnerability
@@ -24,13 +26,14 @@
 <script>
 export default {
   name: "Home",
-  props: {
-    msg: String
-  }
+  data () {
+    return {
+      showMore: false
+    }
+  },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .dropdown-content {
   display: none;
