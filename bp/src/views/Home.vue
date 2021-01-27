@@ -1,4 +1,5 @@
 <template>
+    <main role="main">
   <div
     class="alert alert-success d-flex justify-content-center mt-3"
     role="alert"
@@ -17,6 +18,7 @@
       <p class="ml-3 mt-2">CONTENT TEXT WILL GO HERE</p>
     </div>
   </div>
+    </main>
 </template>
 
 <script>
@@ -30,18 +32,26 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.dropdown-content {
+  display: none;
+  background-color: #f2aaa5;
+  border-bottom-right-radius: 11px;
+  border-bottom-left-radius: 11px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.warningWrapper {
+  border-radius: 11px;
+  background-color: #f72e1f;
+  cursor: pointer;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+.warningWrapper.open .dropdown-content {
+  display: flex;
 }
-a {
-  color: #42b983;
+.warningWrapper.open .arrow {
+  transform: rotate(180deg);
+  transition: 0.6s;
 }
+.arrow {
+  font-size: 30px;
+}
+
 </style>

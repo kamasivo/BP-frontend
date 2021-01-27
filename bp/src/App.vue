@@ -1,11 +1,7 @@
 <template>
+<font-awesome-icon icon="user-secret" />
   <Head />
   <Nav />
-  <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view /> -->
 </template>
 
 <script>
@@ -28,17 +24,11 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
-#nav {
-  padding: 30px;
+main {
+  padding-left: 5%;
+  padding-right: 5%;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.card {
+  border-radius: 11px;
 }
 </style>
