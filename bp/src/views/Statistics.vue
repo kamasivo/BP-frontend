@@ -5,9 +5,6 @@
         <h5>List of connected devices:</h5>
       </div>
       <div class="card-body">
-         <div>
-    <b-table striped hover :items="items"></b-table>
-  </div>
         <table class="table">
           <thead>
             <tr>
@@ -18,13 +15,15 @@
             </tr>
           </thead>
           <tbody>
-
-            <tr>
-              <td scope="row">192.168.0.1</td>
-              <td>TP-link</td>
-              <td>xxxxxxxx</td>
-              <td class="text-success">0</td>
-            </tr>
+          <tr
+          v-for="item in devices"
+          :key="item.name"
+          >
+          <td>{{ item.ip }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.os }}</td>
+          <td>{{ item.vulns }}</td>
+        </tr>
           </tbody>
         </table>
       </div>
@@ -35,15 +34,28 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
-        items: [
-          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ]
+        devices: [
+          {
+            ip: '192.168.10.1',
+            name: 'Frozen Yogurt',
+            os: 'Win 7',
+            vulns: '1'
+          },
+            {
+            ip: '192.168.10.1',
+            name: 'Frozen Yogurt',
+            os: 'Win 7',
+            vulns: '1'
+          },   {
+            ip: '192.168.10.1',
+            name: 'Frozen Yogurt',
+            os: 'Win 7',
+            vulns: '1'
+          },
+        ],
       }
-    }
+    },
   }
 </script>

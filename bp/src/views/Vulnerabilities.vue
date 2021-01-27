@@ -29,7 +29,6 @@
             </tr>
           </thead>
           <tbody>
-            <!-- repeatable item -->
             <tr>
               <td scope="row">1</td>
               <td>Short description</td>
@@ -41,7 +40,6 @@
                 </a>
               </td>
             </tr>
-            <!-- repeatable item END -->
           </tbody>
         </table>
       </div>
