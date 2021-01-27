@@ -8,7 +8,7 @@
         <router-link class="nav-link" to="/statistics">Statistics</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/vulnerabilites">Vulnerebilities</a>
+        <a class="nav-link" href="/vulnerabilities">Vulnerabilities</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/profile">Profile</a>
