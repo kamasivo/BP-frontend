@@ -5,7 +5,7 @@ from config import config
 def insert(ip, os, name, vulns):
     """ insert a new vendor into the vendors table """
     sql = """INSERT INTO devices(ip_address, os, name, num_of_vulns)
-             VALUES(%s, %s, %s, %s) RETURNING id;"""
+             VALUES(%s, %s, %s, %s) RETURNING ip_address;"""
     conn = None
     id = None
     try:
