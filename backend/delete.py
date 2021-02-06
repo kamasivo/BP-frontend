@@ -1,11 +1,9 @@
 import psycopg2
 from config import config
 
-
-def insert(ip, os, name, vendor, osFamily, osGen, vulns):
-    """ insert a new vendor into the vendors table """
-    sql = """INSERT INTO devices(ip_address, os, name, num_of_vulns, vendor, os_family, os_gen)
-             VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING ip_address;"""
+# function to delete whole data from table
+def delete(table):
+    sql = f"DELETE FROM {table} WHERE 1=1;"
     conn = None
     id = None
     try:
@@ -15,10 +13,8 @@ def insert(ip, os, name, vendor, osFamily, osGen, vulns):
         conn = psycopg2.connect(**params)
         # create a new cursor
         cur = conn.cursor()
-        # execute the INSERT statement
-        cur.execute(sql, (ip, os, name, vulns, vendor, osFamily, osGen,))
-        # get the generated id back
-        id = cur.fetchone()[0]
+        # execute the delete statement
+        cur.execute(sql)
         # commit the changes to the database
         conn.commit()
         # close communication with the database
