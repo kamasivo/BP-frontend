@@ -2,10 +2,10 @@ import psycopg2
 from config import config
 
 
-def insert(ip, os, name, vendor, osFamily, osGen, vulns):
+def insert(ip, os, name, vendor, osFamily, osGen, vulns, openPorts):
     """ insert a new vendor into the vendors table """
-    sql = """INSERT INTO devices(ip_address, os, name, num_of_vulns, vendor, os_family, os_gen)
-             VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING ip_address;"""
+    sql = """INSERT INTO devices(ip_address, os, name, num_of_vulns, vendor, os_family, os_gen, open_ports)
+             VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING ip_address;"""
     conn = None
     id = None
     try:
@@ -16,7 +16,7 @@ def insert(ip, os, name, vendor, osFamily, osGen, vulns):
         # create a new cursor
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, (ip, os, name, vulns, vendor, osFamily, osGen,))
+        cur.execute(sql, (ip, os, name, vulns, vendor, osFamily, osGen, openPorts, ))
         # get the generated id back
         id = cur.fetchone()[0]
         # commit the changes to the database

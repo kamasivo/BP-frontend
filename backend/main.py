@@ -36,30 +36,30 @@ for host in nmScan.all_hosts():
     # print('-----------------------------')
 
     #protocols 
-    numOfProtocols = 0
+    openPorts = 0
     for proto in nmScan[host].all_protocols():
-        # print('----------')
-        # print('Protocol : %s' % proto)
+        print('----------')
+        print('Protocol : %s' % proto)
         lport = nmScan[host][proto].keys()
         for port in lport:
-            numOfProtocols += 1
-            # print('port : %s  ' % port)
-            # print('state : %s' % nmScan[host][proto][port]['state'])
+            openPorts += 1
+            print('port : %s  ' % port)
+            print('state : %s' % nmScan[host][proto][port]['state'])
 
 
     # save data to DB
-    print("--------------------------------")
-    print("SAVING DATA")
-    print('IP address: %s' % ipAddress)
-    print('vendor: %s' % vendor)
-    print('name: %s' % name)
-    print('os: %s' % os)
-    print('osFamily: %s' % osFamily)
-    print('osGen: %s' % osGen)
+    # print("--------------------------------")
+    # print("SAVING DATA")
+    # print('IP address: %s' % ipAddress)
+    # print('vendor: %s' % vendor)
+    # print('name: %s' % name)
+    # print('os: %s' % os)
+    # print('osFamily: %s' % osFamily)
+    # print('osGen: %s' % osGen)
+    # print("--------------------------------")
+
+
     numOfVulns = 0
-    print("--------------------------------")
-
-
-    insert(ipAddress, os, name, vendor, osFamily, osGen ,numOfVulns)  
+    insert(ipAddress, os, name, vendor, osFamily, osGen ,numOfVulns, openPorts)  
 
 
