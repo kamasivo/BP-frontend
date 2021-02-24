@@ -23,14 +23,14 @@
           v-for="item in devices"
           :key="item.name"
           >
-          <td>{{ item.ipAddress }}</td>
-          <td>{{ item.os }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.vendor }}</td>
-          <td>{{ item.osFamily }}</td>
-          <td>{{ item.osGen }}</td>
-          <td>{{ item.numOfVulns }}</td>
-          <td>{{ item.openPorts }}</td>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <td>{{ item[3] }}</td>
+          <td>{{ item[4] }}</td>
+          <td>{{ item[5] }}</td>
+          <td>{{ item[6] }}</td>
+          <td>{{ item[7] }}</td>
         </tr>
           </tbody>
         </table>
