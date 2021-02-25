@@ -12,8 +12,8 @@
         >
       </li>
       <li class="nav-item">
-        <router-link :active="isActive" class="nav-link" to="/vulnerabilities">
-          Vulnerabilities
+        <router-link :active="isActive" class="nav-link" to="/devices">
+          Devices
         </router-link>
       </li>
       <li class="nav-item">

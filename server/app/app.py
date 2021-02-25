@@ -24,3 +24,8 @@ def refresh_devices():
     scan()
     select_data = select('devices')
     return jsonify(data = select_data)
+
+@app.route("/api/devices_ports")
+def devices_ports():
+    select_data = select('ports')
+    return jsonify(data = select_data)

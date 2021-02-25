@@ -3,7 +3,7 @@
     <div class="card mt-3">
       <div class="card-header d-flex">
         <h5>List of connected devices:</h5>
-        <button class="btn btn-dark ml-auto" v-on:click="refresh">Refresh</button>
+        <button class="btn btn-dark ml-auto" v-on:click="refresh">{{btnText}}</button>
       </div>
       <div class="card-body">
         <table class="table">
@@ -29,8 +29,8 @@
           <td>{{ item[2] }}</td>
           <td>{{ item[3] }}</td>
           <td>{{ item[5] }}</td>
-          <td>{{ item[4] }}</td>
           <td>{{ item[6] }}</td>
+          <td>{{ item[4] }}</td>
           <td>{{ item[7] }}</td>
         </tr>
           </tbody>
@@ -45,7 +45,8 @@
   export default {
     data () {
       return {
-        devices: 'aaa',
+        devices: '',
+        btnText: 'Refresh'
       }
     },
     created: async function(){
@@ -55,9 +56,12 @@
     },
     methods: {
       refresh: async function() {
+        this.devices = ''
+        this.btnText = 'Scanning the network ...'
         const res = await fetch("http://localhost:5000/api/refresh_devices");
         const obj = await res.json();
         this.devices = obj.data;
+        this.btnText = 'Refresh'
       }
     }
   }

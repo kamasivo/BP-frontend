@@ -1,18 +1,20 @@
 import nmap
 from database.connect import connect
 from database.insert import insert
+from database.insert import insertPort
 from database.delete import delete
 
 
 def scan():
     # connect()   #check connection
 
-    delete('devices')
+    delete('devices')         # delete the database before scan
+    delete('ports')  
 
     nmScan = nmap.PortScanner()    # initialize the port scanner
 
-    # scanRange = nmScan.scan(hosts="192.168.1.0/24", arguments="-O")
-    nmScan.scan('127.0.0.1', arguments='-O')
+    scanRange = nmScan.scan(hosts="192.168.1.0/24", arguments="-O")
+    # nmScan.scan('127.0.0.1', arguments='-O')
 
 
     for host in nmScan.all_hosts():
@@ -36,13 +38,15 @@ def scan():
 
         openPorts = 0
         for proto in nmScan[host].all_protocols():
-            print('----------')
-            print('Protocol : %s' % proto)
+            # print('----------')
+            # print('Protocol : %s' % proto)
             lport = nmScan[host][proto].keys()
             for port in lport:
-                openPorts += 1
-                print('port : %s  ' % port)
-                print('state : %s' % nmScan[host][proto][port]['state'])
+                if(nmScan[host][proto][port]['state'] == 'open'):
+                    openPorts += 1
+                    insertPort(port, ipAddress)
+                    # print('port : %s  ' % port)
+                    # print('state : %s' % nmScan[host][proto][port]['state'])
 
         numOfVulns = 0
         insert(ipAddress, os, name, vendor, osFamily, osGen ,numOfVulns, openPorts)  

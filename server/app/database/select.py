@@ -28,6 +28,5 @@ def select(table):
     finally:
         if conn is not None:
             conn.close()
-            
-    
     return records
+
