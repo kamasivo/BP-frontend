@@ -11,7 +11,7 @@ def connect():
         params = config()
 
         # connect to the PostgreSQL server
-        # print('Connecting to the PostgreSQL database...')
+        print('Connecting to the PostgreSQL database...')
         conn = psycopg2.connect(**params)
 		
         # create a cursor

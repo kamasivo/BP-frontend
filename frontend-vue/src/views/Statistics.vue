@@ -1,8 +1,9 @@
 <template>
   <main role="main">
     <div class="card mt-3">
-      <div class="card-header">
+      <div class="card-header d-flex">
         <h5>List of connected devices:</h5>
+        <button class="btn btn-dark ml-auto" v-on:click="refresh">Refresh</button>
       </div>
       <div class="card-body">
         <table class="table">
@@ -27,8 +28,8 @@
           <td>{{ item[1] }}</td>
           <td>{{ item[2] }}</td>
           <td>{{ item[3] }}</td>
-          <td>{{ item[4] }}</td>
           <td>{{ item[5] }}</td>
+          <td>{{ item[4] }}</td>
           <td>{{ item[6] }}</td>
           <td>{{ item[7] }}</td>
         </tr>
@@ -51,6 +52,13 @@
     const res = await fetch("http://localhost:5000/api/devices");
     const obj = await res.json();
     this.devices = obj.data;
+    },
+    methods: {
+      refresh: async function() {
+        const res = await fetch("http://localhost:5000/api/refresh_devices");
+        const obj = await res.json();
+        this.devices = obj.data;
+      }
     }
   }
 </script>

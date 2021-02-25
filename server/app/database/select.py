@@ -24,8 +24,10 @@ def select(table):
         # return records
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+        records = 'error'
     finally:
         if conn is not None:
             conn.close()
-
+            
+    
     return records
