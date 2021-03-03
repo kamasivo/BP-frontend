@@ -1,0 +1,9 @@
+pip install python-nmap
+pip install psycopg2.
+pip install -U flask-cors
+
+# sniffer 1
+pip install scapy
+pip install python-geoip-geolite2
+
+

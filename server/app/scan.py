@@ -19,6 +19,8 @@ def scan():
 
     for host in nmScan.all_hosts():
         ipAddress = host
+        # print(nmScan[host])
+        # print("====================")
         if(nmScan[host]['vendor']):
             vendor = nmScan[host]['vendor']
             values_view = vendor.values()

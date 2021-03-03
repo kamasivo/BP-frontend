@@ -1,19 +1,20 @@
 <template>
   <main role="main">
     <!-- device item -->
-    <div class="card mt-3" v-for="item in devices" :key="item[0]">
+    <div class="card mt-3" v-for="(item, index) in devices" :key="item[0]">
       <div class="card-header">
-        <h5>{{item[2]}}</h5>
+        <h5 v-if="item[2]">{{item[2]}}</h5>
+        <h5 v-else>Zariadenie {{index + 1}}</h5>
       </div>
       <div class="card-body">
         <span class="d-flex">
           <p class="font-weight-bold">IP address:</p>
-          <p class="ml-2">{{item[0]}}</p>
+          <p class="ml-1">{{item[0]}}</p>
         </span>
         <span class="d-flex">
-          <p class="font-weight-bold">Open ports:</p>
-          <p class="ml-2" v-if="ports[0][1] == item[0]">
-            <span v-for="port in ports" :key="port[0]">
+          <p class="font-weight-bold mr-1">Open ports:</p>
+          <p v-for="port in ports" :key="port[0]" >
+            <span class="ml-1" v-if="port[1] == item[0]">
               {{port[0]}}, 
             </span>
           </p>
@@ -68,7 +69,6 @@
       const res2 = await fetch("http://localhost:5000/api/devices_ports");
       const obj2 = await res2.json();
       this.ports = obj2.data;
-      console.log(this.ports)
     },
   }
 </script>
