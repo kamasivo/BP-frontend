@@ -1,7 +1,5 @@
-# https://github.com/ickerwx/arpspoof/blob/master/arpspoof.py
-
-# tento spoofer funguje just fine..po jeho spusteni vidim vo wiresharku komunikaciu medi IP...najskor ale musim IP adresy zadat rucne ktore idem spoofovat
-# problem ...koncove zariadenie ma pomalsi pristup na net ..blbe to 
+# toto je zdroj tohto kodu (cely tento subor)
+# https://github.com/ickerwx/arpspoof/blob/master/arpspoof.py  
 # sudo sysctl -w net.inet.ip.forwarding=1  vyriesilo problem s pristupom na siet ...tym som povolil priamy forwarding packetov
 
 import sys
@@ -14,6 +12,8 @@ from scapy.all import *
 # index values into tuples
 IP = 0
 MAC = TARGET = 1
+
+
 
 def get_MAC(interface, target_IP):
     # get the MAC address of target_IP and return it

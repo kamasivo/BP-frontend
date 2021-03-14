@@ -96,7 +96,7 @@ def start_poison_thread(targets, gateway, control_queue, attacker_MAC):
 def restore_ARP_caches(targets, gateway, verbose=True):
     # send correct ARP responses to the targets and the gateway
     print ('Stopping the attack, restoring ARP cache')
-    for i in range(3):
+    for i in xrange(3):
         if verbose:
             print ("ARP %s is at %s" % (gateway[IP], gateway[MAC]))
         for t in targets:
