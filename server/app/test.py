@@ -6,8 +6,7 @@ from spoofer import *
 from sniffer import sniffer
 
 def main(): 
-    targets = ("192.168.1.12")
-    spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=(targets,))
+    spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=())
     spooferThread.start()
 
     snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=())

