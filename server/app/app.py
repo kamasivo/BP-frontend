@@ -15,13 +15,13 @@ from scan import scan
 def onStartup():
     print('MyFlaskApp is starting up!')
 
-    # snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=())
-    # snifferThread.deamon = True
-    # snifferThread.start()
+    snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=())
+    snifferThread.deamon = True
+    snifferThread.start()
 
-    # spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=())
-    # spooferThread.daemon = True
-    # spooferThread.start()
+    spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=())
+    spooferThread.daemon = True
+    spooferThread.start()
 
 class MyFlaskApp(Flask):
   def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):

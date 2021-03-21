@@ -41,6 +41,7 @@
     <div class="card mt-3">
       <div class="card-header d-flex">
         <h5>Types of transfered packets on the network</h5>
+        <button class="btn btn-dark ml-auto" v-on:click="refreshPackets">Refresh</button>
       </div>
       <div class="card-body">
         <table class="table">
@@ -63,8 +64,7 @@
     <div class="card mt-3">
       <div class="card-header d-flex">
         <h5>List of connected devices:</h5>
-        // eslint-disable-next-line vue/no-parsing-error
-        {{this.ipAddresses}}
+        <button class="btn btn-dark ml-auto" v-on:click="refreshIp">Refresh</button>
       </div>
       <div class="card-body">
         <table class="table">
@@ -76,11 +76,11 @@
           </thead>
           <tbody>
           <tr
-          v-for="item in ipAddresses"
-          :key="item.name"
+          v-for="item in ipAddresses.data"
+          :key="item.index"
           >
-          <td>{{ item[0] }}</td>
-          <td>{{ item[1] }}</td>
+          <td>{{ item.ipAddress }}</td>
+          <td>{{ item.sendPackets }}</td>
         </tr>
           </tbody>
         </table>
@@ -124,6 +124,16 @@
         const obj = await res.json();
         this.devices = obj.data;
         this.btnText = 'Refresh'
+      },
+      refreshPackets: async function() {
+        const res = await fetch("http://localhost:5000/api/packets");
+        const obj = await res.json();
+        this.packets = obj.data;
+      },
+      refreshIp: async function() {
+        const res = await fetch("http://localhost:5000/api/ipAddresses");
+        const obj = await res.json();
+        this.ipAddresses = obj.data;
       }
     }
   }
