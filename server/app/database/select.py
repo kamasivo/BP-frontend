@@ -1,7 +1,6 @@
 import psycopg2
 from database.config import config
 
-# function to delete whole data from table
 def select(table):
     sql = f"SELECT * FROM {table};"
     conn = None

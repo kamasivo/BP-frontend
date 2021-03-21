@@ -3,21 +3,21 @@ from flask_cors import CORS
 import json
 import threading
 import time
-
-from database.select import select
-from database.connect import connect
-from scan import scan
 import pandas as panda
 
 from spoofer import *
 from sniffer import sniffer
+from database.select import *
+from database.connect import connect
+from scan import scan
 
 
 def onStartup():
     print('MyFlaskApp is starting up!')
-    snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=())
-    snifferThread.deamon = True
-    snifferThread.start()
+
+    # snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=())
+    # snifferThread.deamon = True
+    # snifferThread.start()
 
     # spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=())
     # spooferThread.daemon = True
@@ -54,15 +54,11 @@ def devices_ports():
 
 @app.route("/api/packets")
 def packets():
-    with open('packets.json', 'r') as f:
+    with open('networkdata/packets.json', 'r') as f:
         data = json.load(f)
     return jsonify(data = data)
 
 @app.route("/api/ipAdresses")
 def ipAdresses():
-
-    # with open('packets.json', 'r') as f:
-    #     data = json.load(f)
-    # panda.DataFrame(ipAdresses).to_json("ipAdresses.json")
-    ret = panda.read_json("ipAdresses.json").to_json()
+    ret = panda.read_json("networkdata/ipAdresses.json").to_json()
     return jsonify(data = ret)

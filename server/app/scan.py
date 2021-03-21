@@ -6,7 +6,7 @@ from database.delete import delete
 
 
 def scan():
-    # connect()   #check connection
+    connect()   #check connection
 
     delete('devices')         # delete the database before scan
     delete('ports')  

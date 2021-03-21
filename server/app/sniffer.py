@@ -12,22 +12,23 @@ tcpPackets = 0
 udpPackets = 0
 icmpPackets = 0
 
-ipAdresses = []
+ipAdresses = [[]]
 
 def network_monitoring_for_visualization_version(pkt):
     if(pkt.haslayer(IP)):
         inList = True
         for ip in ipAdresses:
-            if(ip == pkt[IP].dst):
+            if(ip and ip[0] == pkt[IP].dst):
                 inList = False
-                continue
+                ip[1] += 1
+                break
         if(inList):
-            ipAdresses.append(pkt[IP].dst)
+            ipAdresses.append([pkt[IP].dst, 1])
             print(pkt[IP].dst)
-            panda.DataFrame(ipAdresses).to_json("ipAdresses.json")
+            panda.DataFrame(ipAdresses).to_json("networkdata/ipAdresses.json")
 
     if (pkt.haslayer(TCP)):
-        with open('packets.json', 'r+') as f:
+        with open('networkdata/packets.json', 'r+') as f:
             data = json.load(f)
             global tcpPackets 
             tcpPackets += 1
@@ -36,7 +37,7 @@ def network_monitoring_for_visualization_version(pkt):
             json.dump(data, f, indent=4)
             f.truncate()     
     if (pkt.haslayer(UDP)):
-        with open('packets.json', 'r+') as f:
+        with open('networkdata/packets.json', 'r+') as f:
             data = json.load(f)
             global udpPackets 
             udpPackets += 1
@@ -45,7 +46,7 @@ def network_monitoring_for_visualization_version(pkt):
             json.dump(data, f, indent=4)
             f.truncate()     
     if (pkt.haslayer(ICMP)):
-        with open('packets.json', 'r+') as f:
+        with open('networkdata/packets.json', 'r+') as f:
             data = json.load(f)
             global icmpPackets 
             icmpPackets += 1
