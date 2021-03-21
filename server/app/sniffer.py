@@ -25,7 +25,7 @@ def network_monitoring_for_visualization_version(pkt):
         if(inList):
             ipAdresses.append([pkt[IP].dst, 1])
             print(pkt[IP].dst)
-            panda.DataFrame(ipAdresses).to_json("networkdata/ipAdresses.json")
+            panda.DataFrame(ipAdresses, columns=['ipAddress', 'sendPackets']).to_json("networkdata/ipAdresses.json", orient="table")
 
     if (pkt.haslayer(TCP)):
         with open('networkdata/packets.json', 'r+') as f:

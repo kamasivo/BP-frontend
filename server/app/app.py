@@ -58,7 +58,8 @@ def packets():
         data = json.load(f)
     return jsonify(data = data)
 
-@app.route("/api/ipAdresses")
+@app.route("/api/ipAddresses")
 def ipAdresses():
-    ret = panda.read_json("networkdata/ipAdresses.json").to_json()
-    return jsonify(data = ret)
+    with open('networkdata/ipAdresses.json', 'r') as f:
+        data = json.load(f)
+    return jsonify(data = data)

@@ -63,7 +63,8 @@
     <div class="card mt-3">
       <div class="card-header d-flex">
         <h5>List of connected devices:</h5>
-        {{this.ipAdresses}
+        // eslint-disable-next-line vue/no-parsing-error
+        {{this.ipAddresses}}
       </div>
       <div class="card-body">
         <table class="table">
@@ -75,7 +76,7 @@
           </thead>
           <tbody>
           <tr
-          v-for="item in ipAdresses"
+          v-for="item in ipAddresses"
           :key="item.name"
           >
           <td>{{ item[0] }}</td>
@@ -95,7 +96,7 @@
       return {
         devices: '',
         packets: '',
-        ipAdresses: '',
+        ipAddresses: '',
         btnText: 'Refresh'
       }
     },
@@ -109,11 +110,11 @@
     this.packets = obj2.data;
 
 
-    const res3 = await fetch("http://localhost:5000/api/ipAdresses");
+    const res3 = await fetch("http://localhost:5000/api/ipAddresses");
     const obj3 = await res3.json();
-    this.ipAdresses = obj3.data;
+    this.ipAddresses = obj3.data;
     console.log(this.devices)
-    console.log(this.ipAdresses)
+    console.log(this.ipAddresses)
     },
     methods: {
       refresh: async function() {
