@@ -5,40 +5,54 @@ import socket
 import datetime
 import os
 from geoip import geolite2
-import time
+import json
+import pandas as panda
+
+tcpPackets = 0
+udpPackets = 0
+icmpPackets = 0
+
+ipAdresses = []
 
 def network_monitoring_for_visualization_version(pkt):
-    # print("start")
-    time=datetime.datetime.now()
     if(pkt.haslayer(IP)):
-        print(pkt[IP].dst)
-	# if pkt.haslayer(TCP):
-	# 	# classyfying packets into TCP Incoming packets
-	# 	if socket.gethostbyname(socket.gethostname())== pkt[IP].dst:
-    #         print(pkt[IP].dst)
-	# 		# print(str("[")+str(time)+str("]")+"  "+"TCP-IN:{}".format(len(pkt[TCP]))+" Bytes"+"    "+"SRC-MAC:" +str(pkt.src)+"    "+ "DST-MAC:"+str(pkt.dst)+"    "+ "SRC-PORT:"+str(pkt.sport)+"    "+"DST-PORT:"+str(pkt.dport)+"    "+"SRC-IP:"+str(pkt[IP].src  )+"    "+"DST-IP:"+str(pkt[IP].dst  )+"  " +"Location:" +geolite2.lookup(pkt[IP].src).timezone)
-	
-	# 	if socket.gethostbyname(socket.gethostname())==pkt[IP].src:
-    #         print(pkt[IP].dst)
-	# 		# print(str("[")+str(time)+str("]")+"  "+"TCP-OUT:{}".format(len(pkt[TCP]))+" Bytes"+"    "+"SRC-MAC:" +str(pkt.src)+"    "+ "DST-MAC:"+str(pkt.dst)+"    "+ "SRC-PORT:"+str(pkt.sport)+"    "+"DST-PORT:"+str(pkt.dport)+"    "+"SRC-IP:"+str(pkt[IP].src)+"    "+"DST-IP:"+str(pkt[IP].dst)+"  " +"Location:" +geolite2.lookup(pkt[IP].dst).timezone)
-	# if pkt.haslayer(UDP):
-	# 	if socket.gethostbyname(socket.gethostname())==pkt[IP].src:
-	# 		# classyfying packets into UDP Outgoing packets
-	# 		# print(str("[")+str(time)+str("]")+"  "+"UDP-OUT:{}".format(len(pkt[UDP]))+" Bytes "+"    "+"SRC-MAC:" +str(pkt.src)+"    "+"DST-MAC:"+ str(pkt.dst)+"    "+"SRC-PORT:"+ str(pkt.sport) +"    "+"DST-PORT:"+ str(pkt.dport)+"    "+"SRC-IP:"+ str(pkt[IP].src)+"    "+"DST-IP:"+ str(pkt[IP].dst)+"  " +"Location:" +geolite2.lookup(pkt[IP].dst).timezone)
-	#         print(pkt[IP].dst)
-	# 	if socket.gethostbyname(socket.gethostname())==pkt[IP].dst:
-	# 		# classyfying packets into UDP Incoming packets
-	# 		# print(str("[")+str(time)+str("]")+"  "+"UDP-IN:{}".format(len(pkt[UDP]))+" Bytes "+"    "+"SRC-MAC:" +str(pkt.src)+"    "+"DST-MAC:"+ str(pkt.dst)+"    "+"SRC-PORT:"+ str(pkt.sport) +"    "+"DST-PORT:"+ str(pkt.dport)+"    "+"SRC-IP:"+ str(pkt[IP].src)+"    "+"DST-IP:"+ str(pkt[IP].dst)+"  " +"Location:" +geolite2.lookup(pkt[IP].src).timezone)
-    #          print(pkt[IP].dst)
-	# if pkt.haslayer(ICMP):
-	# 	# classyfying packets into UDP Incoming packets
-	# 	if socket.gethostbyname(socket.gethostname())==pkt[IP].src:
-	# 		# print(str("[")+str(time)+str("]")+"  "+"ICMP-OUT:{}".format(len(pkt[ICMP]))+" Bytes"+"    "+"IP-Version:"+str(pkt[IP].version) +"    "*1+" SRC-MAC:"+str(pkt.src)+"    "+"DST-MAC:"+str(pkt.dst)+"    "+"SRC-IP: "+str(pkt[IP].src)+ "    "+"DST-IP:  "+str(pkt[IP].dst)+"  " +"Location:" +geolite2.lookup(pkt[IP].dst).timezone)	
-    #         print(pkt[IP].dst)
-	# 	if socket.gethostbyname(socket.gethostname())==pkt[IP].dst:
-	# 		# print(str("[")+str(time)+str("]")+"  "+"ICMP-IN:{}".format(len(pkt[ICMP]))+" Bytes"+"    "+"IP-Version:"+str(pkt[IP].version)+"    "*1+"	 SRC-MAC:"+str(pkt.src)+"    "+"DST-MAC:"+str(pkt.dst)+"    "+"SRC-IP: "+str(pkt[IP].src)+ "    "+"DST-IP:  "+str(pkt[IP].dst)+"  " +"Location:" +geolite2.lookup(pkt[IP].src).timezone)	
-    #         print(pkt[IP].dst)
-# if __name__ == '__main__':
+        inList = True
+        for ip in ipAdresses:
+            if(ip == pkt[IP].dst):
+                inList = False
+                continue
+        if(inList):
+            ipAdresses.append(pkt[IP].dst)
+            print(pkt[IP].dst)
+            panda.DataFrame(ipAdresses).to_json("ipAdresses.json")
+
+    if (pkt.haslayer(TCP)):
+        with open('packets.json', 'r+') as f:
+            data = json.load(f)
+            global tcpPackets 
+            tcpPackets += 1
+            data['tcp'] = tcpPackets 
+            f.seek(0)       
+            json.dump(data, f, indent=4)
+            f.truncate()     
+    if (pkt.haslayer(UDP)):
+        with open('packets.json', 'r+') as f:
+            data = json.load(f)
+            global udpPackets 
+            udpPackets += 1
+            data['udp'] = tcpPackets 
+            f.seek(0)       
+            json.dump(data, f, indent=4)
+            f.truncate()     
+    if (pkt.haslayer(ICMP)):
+        with open('packets.json', 'r+') as f:
+            data = json.load(f)
+            global icmpPackets 
+            icmpPackets += 1
+            data['icmp'] = icmpPackets 
+            f.seek(0)       
+            json.dump(data, f, indent=4)
+            f.truncate()     
 
 def sniffer():
     print("sniffer connected")
