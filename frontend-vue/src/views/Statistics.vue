@@ -37,6 +37,54 @@
         </table>
       </div>
     </div>
+
+    <div class="card mt-3">
+      <div class="card-header d-flex">
+        <h5>Types of transfered packets on the network</h5>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">TCP</th>
+              <th scope="col">UDP</th>
+              <th scope="col">ICMP</th>
+            </tr>
+          </thead>
+          <tbody>
+          <td>{{this.packets.tcp}}</td>
+          <td>{{this.packets.udp}}</td>
+          <td>{{this.packets.icmp}}</td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-header d-flex">
+        <h5>List of connected devices:</h5>
+        {{this.ipAdresses}
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">IP address</th>
+              <th scope="col">Send packets</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr
+          v-for="item in ipAdresses"
+          :key="item.name"
+          >
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -46,6 +94,8 @@
     data () {
       return {
         devices: '',
+        packets: '',
+        ipAdresses: '',
         btnText: 'Refresh'
       }
     },
@@ -53,6 +103,17 @@
     const res = await fetch("http://localhost:5000/api/devices");
     const obj = await res.json();
     this.devices = obj.data;
+
+    const res2 = await fetch("http://localhost:5000/api/packets");
+    const obj2 = await res2.json();
+    this.packets = obj2.data;
+
+
+    const res3 = await fetch("http://localhost:5000/api/ipAdresses");
+    const obj3 = await res3.json();
+    this.ipAdresses = obj3.data;
+    console.log(this.devices)
+    console.log(this.ipAdresses)
     },
     methods: {
       refresh: async function() {
