@@ -70,8 +70,11 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">IP address</th>
+              <th scope="col">Local IP address</th>
+              <th scope="col">Foreign IP address</th>
               <th scope="col">Send packets</th>
+              <th scope="col">Recieved packets</th>
+              <th scope="col">Blacklisted</th>
             </tr>
           </thead>
           <tbody>
@@ -79,8 +82,11 @@
           v-for="item in ipAddresses.data"
           :key="item.index"
           >
-          <td>{{ item.ipAddress }}</td>
+          <td>{{ item.ipAddressLocal }}</td>
+          <td>{{ item.ipAddressForeign }}</td>
           <td>{{ item.sendPackets }}</td>
+          <td>{{ item.receivedPackets }}</td>
+          <td>{{ item.blackList }}</td>
         </tr>
           </tbody>
         </table>

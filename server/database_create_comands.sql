@@ -59,13 +59,10 @@ ALTER TABLE public.devices
 ALTER TABLE public.devices
     ADD COLUMN open_ports bigint;
 
+
+
 CREATE TABLE public.ports
 (
-    port_number bigint,
-    ip_address text COLLATE pg_catalog."default"
+    ip_address "char"[],
+    port_number bigint
 )
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.ports
-    OWNER to postgres;

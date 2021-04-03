@@ -7,3 +7,5 @@ pip install python-geoip-geolite2
 
 pip install pandas
 
+pip install spam-lists
+
