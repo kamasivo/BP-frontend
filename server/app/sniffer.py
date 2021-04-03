@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from scapy.all import *
 import socket
 import datetime
@@ -14,7 +12,7 @@ icmpPackets = 0
 
 ipAdresses = [[]]
 
-def network_monitoring_for_visualization_version(pkt):
+def network_sniffer(pkt):
     if(pkt.haslayer(IP)):
         inList = True
         for ip in ipAdresses:
@@ -56,5 +54,5 @@ def network_monitoring_for_visualization_version(pkt):
             f.truncate()     
 
 def sniffer():
-    print("sniffer connected")
-    sniff(prn=network_monitoring_for_visualization_version)
+    print("Network packet counter started.")
+    sniff(prn=network_sniffer)

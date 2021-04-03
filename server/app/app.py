@@ -11,10 +11,8 @@ from database.select import *
 from database.connect import connect
 from scan import scan
 
-
+# this method run just once on startup of flask application
 def onStartup():
-    print('MyFlaskApp is starting up!')
-
     snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=())
     snifferThread.deamon = True
     snifferThread.start()

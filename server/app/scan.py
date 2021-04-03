@@ -9,7 +9,7 @@ def scan():
     connect()   #check connection
 
     delete('devices')         # delete the database before scan
-    delete('ports')  
+    # delete('ports')  
 
     nmScan = nmap.PortScanner()    # initialize the port scanner
 
