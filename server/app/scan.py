@@ -6,10 +6,11 @@ from database.delete import delete
 
 
 def scan():
+    print("Start nmap scan to find devices and ports.")
     connect()   #check connection
 
     delete('devices')         # delete the database before scan
-    # delete('ports')  
+    delete('ports')  
 
     nmScan = nmap.PortScanner()    # initialize the port scanner
 
@@ -40,15 +41,11 @@ def scan():
 
         openPorts = 0
         for proto in nmScan[host].all_protocols():
-            # print('----------')
-            # print('Protocol : %s' % proto)
             lport = nmScan[host][proto].keys()
             for port in lport:
                 if(nmScan[host][proto][port]['state'] == 'open'):
                     openPorts += 1
                     insertPort(port, ipAddress)
-                    # print('port : %s  ' % port)
-                    # print('state : %s' % nmScan[host][proto][port]['state'])
 
         numOfVulns = 0
         insert(ipAddress, os, name, vendor, osFamily, osGen ,numOfVulns, openPorts)  

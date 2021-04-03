@@ -1,9 +1,10 @@
 import nmap
 
 
-def vuln_scan():
+def find_vulnerabilities():
+    print("Start nmap script scan to find vulnerabilities.")
 
-    nmScan = nmap.PortScanner()    # initialize the port scanner
+    nmScan = nmap.PortScanner()  
 
     #nasledujuci sken je rovanky: takto ich potrebujem prepisovat
     # nmap -vv --script ssl-cert,ssl-enum-ciphers -p 443,465,993,995,3389
@@ -12,4 +13,4 @@ def vuln_scan():
     for host in nmScan.all_hosts():
         print(nmScan[host])
 
-vuln_scan()
+find_vulnerabilities()

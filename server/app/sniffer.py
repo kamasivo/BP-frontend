@@ -11,19 +11,26 @@ udpPackets = 0
 icmpPackets = 0
 
 ipAdresses = [[]]
+localNetwork = '192.168.'
+
+#return true if already in list
+def is_in_ipadresses(ipAddressFrom, ipAddressTo):
+    global ipAdresses
+    for ip in ipAdresses:
+        if(ip and ip[0] == ipAddressFrom and ip[1] == ipAddressTo):
+            ip[2] += 1
+            return True
+    return False
 
 def network_sniffer(pkt):
     if(pkt.haslayer(IP)):
-        inList = True
-        for ip in ipAdresses:
-            if(ip and ip[0] == pkt[IP].dst):
-                inList = False
-                ip[1] += 1
-                break
-        if(inList):
-            ipAdresses.append([pkt[IP].dst, 1])
-            print(pkt[IP].dst)
-            panda.DataFrame(ipAdresses, columns=['ipAddress', 'sendPackets']).to_json("networkdata/ipAdresses.json", orient="table")
+        global ipAdresses, localNetwork
+        inList = is_in_ipadresses(pkt[IP].src, pkt[IP].dst)
+
+        if(not inList):
+            ipAdresses.append([pkt[IP].src, pkt[IP].dst, 1])
+            print(pkt[IP].src)
+            panda.DataFrame(ipAdresses, columns=['ipAddressFrom', 'ipAddressTo', 'sendPackets']).to_json("networkdata/ipAdresses.json", orient="table")
 
     if (pkt.haslayer(TCP)):
         with open('networkdata/packets.json', 'r+') as f:
