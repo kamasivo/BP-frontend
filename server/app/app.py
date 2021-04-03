@@ -15,11 +15,11 @@ from scan import scan
 # this method run just once on startup of flask application
 def onStartup():
     print("Flask app is starting.")
-    snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=(), daemon=True)
-    snifferThread.start()
+    # snifferThread = threading.Thread(target=sniffer, name="sniffer_function", args=(), daemon=True)
+    # snifferThread.start()
 
-    spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=(), daemon=True)
-    spooferThread.start()
+    # spooferThread = threading.Thread(target=spoofer, name="spoofer_function", args=(), daemon=True)
+    # spooferThread.start()
 
 class MyFlaskApp(Flask):
   def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):

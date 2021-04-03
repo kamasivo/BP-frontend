@@ -63,6 +63,7 @@
 
     <div class="card mt-3">
       <div class="card-header d-flex">
+        {{this.result}}
         <h5>List of connected devices:</h5>
         <button class="btn btn-dark ml-auto" v-on:click="refreshIp">Refresh</button>
       </div>
@@ -103,26 +104,21 @@
         devices: '',
         packets: '',
         ipAddresses: '',
-        btnText: 'Refresh'
+        btnText: 'Refresh',
+        result: ''
       }
     },
     created: async function(){
-    const res = await fetch("http://localhost:5000/api/devices");
-    const obj = await res.json();
-    this.devices = obj.data;
-
-    const res2 = await fetch("http://localhost:5000/api/packets");
-    const obj2 = await res2.json();
-    this.packets = obj2.data;
-
-
-    const res3 = await fetch("http://localhost:5000/api/ipAddresses");
-    const obj3 = await res3.json();
-    this.ipAddresses = obj3.data;
-    console.log(this.devices)
-    console.log(this.ipAddresses)
+      this.loadDevices()
+      this.refreshPackets()
+      this.refreshIp()
     },
     methods: {
+      loadDevices: async function() {
+        const res = await fetch("http://localhost:5000/api/devices");
+        const obj = await res.json();
+        this.devices = obj.data;
+      },
       refresh: async function() {
         this.devices = ''
         this.btnText = 'Scanning the network ...'
@@ -140,6 +136,17 @@
         const res = await fetch("http://localhost:5000/api/ipAddresses");
         const obj = await res.json();
         this.ipAddresses = obj.data;
+
+        let array = obj.data.data;
+        console.log(array)
+        this.result = Array.from( array.reduce((a,{ipAddressLocal, ...rest})=>{ 
+          return a.set(ipAddressLocal, [rest].concat(a.get(ipAddressLocal)||[]));
+          }, new Map())
+          ).map(([ipAddressLocal, children])=>({ipAddressLocal,children}));
+
+          console.log(this.result)
+
+          // todo..this is ready for nice table input...find table 
       }
     }
   }

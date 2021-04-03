@@ -13,6 +13,7 @@ icmpPackets = 0
 
 ipAdresses = [[]]
 localNetwork = '192.168.'
+frame = ''
 
 #return true if already in list
 def is_in_ipadresses(ipAddressFrom, ipAddressTo):
@@ -47,8 +48,7 @@ def network_sniffer(pkt):
                     print('IP found on blacklist')
                     onBlacklist = True
                 ipAdresses.append([pkt[IP].dst, pkt[IP].src, 0, 1, onBlacklist])
-            panda.DataFrame(ipAdresses, columns=['ipAddressLocal', 'ipAddressForeign', 'sendPackets', 'receivedPackets', 'blackList']).to_json("networkdata/ipAdresses.json", orient="table")
-
+                panda.DataFrame(ipAdresses, columns=['ipAddressLocal', 'ipAddressForeign', 'sendPackets', 'receivedPackets', 'blackList']).to_json("networkdata/ipAdresses.json", orient="table")
     if (pkt.haslayer(TCP)):
         with open('networkdata/packets.json', 'r+') as f:
             data = json.load(f)
