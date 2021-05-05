@@ -23,7 +23,7 @@
       </li>
     </ul>
     <div class="mt-2 mt-md-0">
-      <h2 class="mb-0 text-white">ROUTER</h2>
+      <h2 class="mb-0 text-white">NETWORK SCANNER</h2>
     </div>
   </nav>
   <router-view />

@@ -49,5 +49,3 @@ def scan():
 
         numOfVulns = 0
         insert(ipAddress, os, name, vendor, osFamily, osGen ,numOfVulns, openPorts)  
-
-

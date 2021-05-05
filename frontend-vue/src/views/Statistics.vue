@@ -63,7 +63,7 @@
 
     <div class="card mt-3">
       <div class="card-header d-flex">
-        {{this.result}}
+        <!-- {{this.result}} -->
         <h5>List of connected devices:</h5>
         <button class="btn btn-dark ml-auto" v-on:click="refreshIp">Refresh</button>
       </div>
@@ -71,23 +71,23 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Local IP address</th>
-              <th scope="col">Foreign IP address</th>
+              <th scope="col">IP address</th>
               <th scope="col">Send packets</th>
               <th scope="col">Recieved packets</th>
               <th scope="col">Blacklisted</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-for="item in result" :key="item.index">
+            <tr>
+              <td colspan="4" class="bold">{{item.ipAddressLocal}}</td>
+            </tr>
           <tr
-          v-for="item in ipAddresses.data"
-          :key="item.index"
+            v-for="child in item.children" :key="child.index"
           >
-          <td>{{ item.ipAddressLocal }}</td>
-          <td>{{ item.ipAddressForeign }}</td>
-          <td>{{ item.sendPackets }}</td>
-          <td>{{ item.receivedPackets }}</td>
-          <td>{{ item.blackList }}</td>
+            <td>{{ child.ipAddressForeign }}</td>
+            <td>{{ child.sendPackets }}</td>
+            <td>{{ child.receivedPackets }}</td>
+            <td>{{ child.blackList }}</td>
         </tr>
           </tbody>
         </table>
@@ -138,16 +138,18 @@
         this.ipAddresses = obj.data;
 
         let array = obj.data.data;
-        console.log(array)
         this.result = Array.from( array.reduce((a,{ipAddressLocal, ...rest})=>{ 
           return a.set(ipAddressLocal, [rest].concat(a.get(ipAddressLocal)||[]));
           }, new Map())
           ).map(([ipAddressLocal, children])=>({ipAddressLocal,children}));
-
-          console.log(this.result)
-
-          // todo..this is ready for nice table input...find table 
       }
     }
   }
 </script>
+
+
+<style>
+.bold {
+  font-weight: bold;
+}
+</style>

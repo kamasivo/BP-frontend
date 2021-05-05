@@ -50,7 +50,9 @@ def send_ARP(destination_IP, destination_MAC, source_IP, source_MAC):
 
 def spoofer():
     gateway = "192.168.1.1"
-    interface = "en0"
+    # eth0 je ak je lan kabel
+    # wlan0 je ak je wifi
+    interface = "wlan0"
     attacker_MAC = get_if_hwaddr(interface)
     targets = []
     threads = []
