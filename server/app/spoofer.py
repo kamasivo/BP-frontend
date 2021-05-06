@@ -59,7 +59,7 @@ def spoofer():
     threadsNum = 0
 
     potentialTargets = []
-    for i in range(2, 120):
+    for i in range(2, 250):
         ip = "192.168.1." + str(i)
         potentialTargets.append(ip)
 
