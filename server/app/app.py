@@ -10,7 +10,7 @@ from sniffer import sniffer
 from database.select import *
 from database.connect import connect
 from scan import scan
-# from vuln import find_vulnerabilities
+from vuln import find_vulnerabilities
 
 # this method run just once on startup of flask application
 def onStartup():
@@ -42,7 +42,6 @@ def devices():
 @app.route("/api/refresh_devices")
 def refresh_devices():
     scan()
-    # find_vulnerabilities()
     select_data = select('devices')
     return jsonify(data = select_data)
 
@@ -68,3 +67,12 @@ def vulners():
     with open('networkdata/vulns.json', 'r') as f:
         data = json.load(f)
     return jsonify(data = data)
+
+
+@app.route("/api/refresh_vulns")
+def refresh_vulners():
+    find_vulnerabilities()
+    with open('networkdata/vulns.json', 'r') as f:
+        data = json.load(f)
+    return jsonify(data = data)
+

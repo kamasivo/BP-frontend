@@ -1,55 +1,41 @@
 <template>
   <main role="main">
-    <span>
-      {{result}}
-    </span>
+      <div class="card-header d-flex mt-2">
+        <h5 class="mb-0">List of devices</h5>
+        <button class="btn btn-dark ml-auto" v-on:click="refresh">{{btnText}}</button>
+      </div>
     <!-- device item -->
-     <div class="card mt-3" v-for="(item, index) in result" :key="item[0]">
+     <div class="card mt-3" v-for="item in result" :key="item[0]">
       <div class="card-header">
-        <h5 v-if="item[2]">{{item[2]}}</h5>
-        <h5 v-else>Zariadenie {{index + 1}}</h5>
+        <h5 class="font-weight-bold mt-2">{{item.ipAddress}}</h5>
       </div>
       <div class="card-body">
-        <span class="d-flex">
-          <p class="font-weight-bold">IP address:</p>
-          <p class="ml-1">{{item[1]}}</p>
+        <span class="d-flex flex-column">
+          <div v-for="port in item.children" :key="port[1]" >
+            <div class="d-flex mt-2">
+              <span style="width: 120px;" class="font-weight-bold"> Port number: </span>
+              <span> {{port.port}} </span>
+            </div>  
+            <div class="d-flex mt-2">
+              <span style="width: 120px;" class="font-weight-bold"> State: </span>
+              <span> {{port.state}} </span>
+            </div> 
+            <div class="d-flex mt-2">
+              <span style="width: 120px;"  class="font-weight-bold"> Service name: </span>
+              <span> {{port.name}} </span>
+            </div>
+            <div class="d-flex mt-2">
+              <span style="width: 120px;"  class="font-weight-bold"> Vulnerabilities: </span>
+              <div class="d-flex flex-column">
+
+              <div v-for="vuln in port.script" :key="vuln[1]" >
+                <p class="mr-1"> {{vuln}} </p>
+              </div>
+              </div>
+            </div>    
+            <hr>          
+          </div>
         </span>
-        <span class="d-flex">
-          <p class="font-weight-bold mr-1">Open ports:</p>
-          <p v-for="port in ports" :key="port[1]" >
-            <span class="ml-1" v-if="port[1] == item[1]">
-              {{port}}, 
-            </span>
-          </p>
-        </span>
-        <span class="d-flex">
-          <p class="font-weight-bold">Operation system:</p>
-          <p class="ml-2">{{item[2]}}</p>
-        </span>
-        <h5>Vulnerabilities:</h5>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Link to solution</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row">1</td>
-              <td>Short description</td>
-              <td>Link</td>
-              <td>
-                <a href="#"> Ignore </a>
-                <a class="ml-2" href="#">
-                  <i class="fas fa-trash-alt text-danger trashIcon"></i>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div> 
     <!-- device item END-->
@@ -60,45 +46,43 @@
   export default {
     data () {
       return {
-        devices: '',
-        ports: [[]],
+        btnText: 'Refresh',
         result: '',
       }
     },
     created: async function(){
-//       const res = await fetch("http://localhost:5000/api/devices");
-//       const obj = await res.json();
-//       this.devices = obj.data;
-//       console.log(this.devices)
-
-//       const res2 = await fetch("http://localhost:5000/api/devices_ports");
-//       const obj2 = await res2.json();
-//       this.ports = obj2.data;
-// console.log(this.ports)
       this.loadVulnerabilites()
     },
     methods: {
       loadVulnerabilites: async function() {
         const res = await fetch("http://localhost:5000/api/vulns");
         const obj = await res.json();
-
-        this.result = obj.data.data
-
-        // let array = obj.data.data;
-        // this.result = Array.from( array.reduce((a,{ipAddressLocal, ...rest})=>{ 
-        //   return a.set(ipAddressLocal, [rest].concat(a.get(ipAddressLocal)||[]));
-        //   }, new Map())
-        //   ).map(([ipAddressLocal, children])=>({ipAddressLocal,children}));
-          // console.log(this.result)
-      }
+        this.handleData(obj)
+      },
+    refresh: async function() {
+      this.result = ''
+      this.btnText = 'Scanning the network for vulnerabilities ...'
+      const res = await fetch("http://localhost:5000/api/refresh_vulns");
+      const obj = await res.json();
+      this.handleData(obj)
+      this.btnText = 'Refresh'
+    },
+    handleData: function(obj) {
+      let array = obj.data.data;
+      this.result = Array.from( array.reduce((a,{ipAddress, ...rest})=>{ 
+        return a.set(ipAddress, [rest].concat(a.get(ipAddress)||[]));
+        }, new Map())
+        ).map(([ipAddress, children])=>({ipAddress,children}));
+        console.log(this.result)
+      // first value is always null so shift
+      this.result.shift()
+      this.result.forEach(element => {
+        element.children.shift()
+          element.children.forEach(e => {
+          e.script = e.script.split('\n\n');
+        })
+      }); 
+    }
     }
   }
 </script>
-
-
-
-<style scoped>
-.trashIcon {
-  font-size: 20px;
-}
-</style>

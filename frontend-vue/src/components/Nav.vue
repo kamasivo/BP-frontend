@@ -13,14 +13,9 @@
       </li>
       <li class="nav-item">
         <router-link :active="isActive" class="nav-link" to="/devices">
-          Devices
+          Vulnerabilities
         </router-link>
       </li>
-      <!-- <li class="nav-item">
-        <router-link :active="isActive" class="nav-link" to="/vulnerabilities"
-          >Vulnerabilities</router-link
-        >
-      </li> -->
     </ul>
     <div class="mt-2 mt-md-0">
       <h2 class="mb-0 text-white">NETWORK SCANNER</h2>

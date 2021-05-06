@@ -18,11 +18,6 @@ const routes = [
     component: () => import("../views/Devices.vue")
   },
   {
-    path: "/vulnerabilities",
-    name: "Vulnerabilities",
-    component: () => import("../views/Vulnerabilities.vue")
-  },
-  {
     path: '/:pathMatch(.*)*',
     component: () => import("../views/PageNotFound.vue")
   },
