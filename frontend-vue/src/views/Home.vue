@@ -1,23 +1,40 @@
 <template>
   <main role="main">
-    <div
-      class="alert alert-success d-flex justify-content-center mt-3"
-      role="alert"
-    >
-      <h4 class="alert-heading mb-0">All safe!</h4>
-    </div>
-    <div class="warningWrapper mt-3" v-bind:class="{ open: showMore }"
- v-on:click="showMore = !showMore"
->
-      <div class="d-flex align-items-center pt-2 pb-2">
-        <h2 class="ml-3 mt-2 text-white">
-          WARNING - [DEVICE NAME] has vulnerability
-        </h2>
-        <i class="fas fa-arrow-down arrow ml-auto mr-5 text-white"></i>
+    <div class="card mt-3">
+      <div class="card-header d-flex">
+        <h5>List of connected devices</h5>
+        <button class="btn btn-dark ml-auto" v-on:click="refresh">{{btnText}}</button>
       </div>
-
-      <div class="dropdown-content">
-        <p class="ml-3 mt-2">CONTENT TEXT WILL GO HERE</p>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">IP address</th>
+              <th scope="col">Operation system</th>
+              <!-- <th scope="col">Device name</th> -->
+              <th scope="col">Vendor</th>
+              <th scope="col">OS family</th>
+              <th scope="col">OS gen</th>
+              <th scope="col">Number of vulnerabilities</th>
+              <th scope="col">Open ports</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr
+          v-for="item in devices"
+          :key="item.name"
+          >
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <!-- <td>{{ item[3] }}</td> -->
+          <td>{{ item[4] }}</td>
+          <td>{{ item[6] }}</td>
+          <td>{{ item[7] }}</td>
+          <td>{{ item[5] }}</td>
+          <td>{{ item[8] }}</td>
+        </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
@@ -28,32 +45,32 @@ export default {
   name: "Home",
   data () {
     return {
-      showMore: false
+        devices: '',
+        btnText: 'Refresh',
+        result: ''
     }
   },
+  created: async function(){
+      this.loadDevices()
+    },
+  methods: {
+    refresh: async function() {
+      this.devices = ''
+      this.btnText = 'Scanning the network ...'
+      const res = await fetch("http://localhost:5000/api/refresh_devices");
+      const obj = await res.json();
+      this.devices = obj.data;
+      this.btnText = 'Refresh'
+    },
+    loadDevices: async function() {
+        const res = await fetch("http://localhost:5000/api/devices");
+        const obj = await res.json();
+        this.devices = obj.data;
+      },
+  }
 };
 </script>
 
 <style scoped>
-.dropdown-content {
-  display: none;
-  background-color: #f2aaa5;
-  border-bottom-right-radius: 11px;
-  border-bottom-left-radius: 11px;
-}
-.warningWrapper {
-  border-radius: 11px;
-  background-color: #f72e1f;
-  cursor: pointer;
-}
-.warningWrapper.open .dropdown-content {
-  display: flex;
-}
-.warningWrapper.open .arrow {
-  transform: rotate(180deg);
-  transition: 0.6s;
-}
-.arrow {
-  font-size: 30px;
-}
+
 </style>

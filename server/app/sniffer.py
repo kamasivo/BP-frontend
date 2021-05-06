@@ -29,7 +29,6 @@ def is_in_ipadresses(ipAddressFrom, ipAddressTo):
             return True
     return False
 
-# myslienka...mam localnu..k nej pride niaka cuzdia..zaznacim si a pocet prijatych a odoslanych k tej cudzej
 def network_sniffer(pkt):
     if(pkt.haslayer(IP)):
         global ipAdresses, localNetwork

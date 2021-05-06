@@ -1,42 +1,5 @@
 <template>
   <main role="main">
-    <div class="card mt-3">
-      <div class="card-header d-flex">
-        <h5>List of connected devices:</h5>
-        <button class="btn btn-dark ml-auto" v-on:click="refresh">{{btnText}}</button>
-      </div>
-      <div class="card-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">IP address</th>
-              <th scope="col">Operation system</th>
-              <th scope="col">Device name</th>
-              <th scope="col">Vendor</th>
-              <th scope="col">OS family</th>
-              <th scope="col">OS gen</th>
-              <th scope="col">Number of vulnerabilities</th>
-              <th scope="col">Open ports</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr
-          v-for="item in devices"
-          :key="item.name"
-          >
-          <td>{{ item[0] }}</td>
-          <td>{{ item[1] }}</td>
-          <td>{{ item[2] }}</td>
-          <td>{{ item[3] }}</td>
-          <td>{{ item[5] }}</td>
-          <td>{{ item[6] }}</td>
-          <td>{{ item[4] }}</td>
-          <td>{{ item[7] }}</td>
-        </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
     <div class="card mt-3">
       <div class="card-header d-flex">
@@ -63,7 +26,6 @@
 
     <div class="card mt-3">
       <div class="card-header d-flex">
-        <!-- {{this.result}} -->
         <h5>List of connected devices:</h5>
         <button class="btn btn-dark ml-auto" v-on:click="refreshIp">Refresh</button>
       </div>
@@ -101,10 +63,8 @@
   export default {
     data () {
       return {
-        devices: '',
         packets: '',
         ipAddresses: '',
-        btnText: 'Refresh',
         result: ''
       }
     },
@@ -118,14 +78,6 @@
         const res = await fetch("http://localhost:5000/api/devices");
         const obj = await res.json();
         this.devices = obj.data;
-      },
-      refresh: async function() {
-        this.devices = ''
-        this.btnText = 'Scanning the network ...'
-        const res = await fetch("http://localhost:5000/api/refresh_devices");
-        const obj = await res.json();
-        this.devices = obj.data;
-        this.btnText = 'Refresh'
       },
       refreshPackets: async function() {
         const res = await fetch("http://localhost:5000/api/packets");

@@ -62,3 +62,9 @@ def ipAdresses():
     with open('networkdata/ipAdresses.json', 'r') as f:
         data = json.load(f)
     return jsonify(data = data)
+
+@app.route("/api/vulns")
+def vulners():
+    with open('networkdata/vulns.json', 'r') as f:
+        data = json.load(f)
+    return jsonify(data = data)

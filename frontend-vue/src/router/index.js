@@ -18,9 +18,9 @@ const routes = [
     component: () => import("../views/Devices.vue")
   },
   {
-    path: "/profile",
-    name: "Profile",
-    component: () => import("../views/Profile.vue")
+    path: "/vulnerabilities",
+    name: "Vulnerabilities",
+    component: () => import("../views/Vulnerabilities.vue")
   },
   {
     path: '/:pathMatch(.*)*',
