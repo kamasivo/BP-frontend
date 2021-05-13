@@ -24,6 +24,10 @@
               <span style="width: 120px;"  class="font-weight-bold"> Service name: </span>
               <span> {{port.name}} </span>
             </div>
+             <div class="d-flex mt-2">
+              <span style="width: 120px;"  class="font-weight-bold"> Product name: </span>
+              <span> {{port.product}} </span>
+            </div>
             <div class="d-flex mt-2">
               <span style="width: 120px;"  class="font-weight-bold"> Vulnerabilities: </span>
               <div class="d-flex flex-column">
@@ -79,7 +83,7 @@
       this.result.forEach(element => {
         element.children.shift()
           element.children.forEach(e => {
-          e.script = e.script.split('\n\n');
+          e.script = e.script.split('\n');
         })
       }); 
     }

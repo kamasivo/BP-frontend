@@ -9,8 +9,8 @@ def find_vulnerabilities():
     print("Start nmap script scan to find vulnerabilities.")
 
     nmScan = nmap.PortScanner()  
-
-    nmScan.scan('192.168.1.1/24', arguments='-sV -script vulscan/scipag_vulscan/vulscan.nse, ')
+    nmScan.scan('192.168.1.220', arguments='-sV -script vulners')
+    # nmScan.scan('192.168.1.1/24', arguments='-sV -script vulners')
     # print(nmScan.command_line())
     vuln_list = [[]]
     for host in nmScan.all_hosts():
@@ -22,16 +22,12 @@ def find_vulnerabilities():
                 # print(nmScan[host]['tcp'][port]["state"])
                 # print(nmScan[host]['tcp'][port]["name"])
                 if('script' in nmScan[host]['tcp'][port]):
-                    if('fingerprint-strings' in nmScan[host]['tcp'][port]["script"]):
-                        # print(nmScan[host]['tcp'][port]["script"]['fingerprint-strings']) 
-                        vuln_list.append([host, port, nmScan[host]['tcp'][port]["state"], nmScan[host]['tcp'][port]["name"], nmScan[host]['tcp'][port]["script"]['fingerprint-strings']])   
-                    if('vulscan' in nmScan[host]['tcp'][port]["script"]):
-                        # print(nmScan[host]['tcp'][port]["script"]['vulscan'])
-                        vuln_list.append([host, port, nmScan[host]['tcp'][port]["state"], nmScan[host]['tcp'][port]["name"], nmScan[host]['tcp'][port]["script"]['vulscan']])   
+                    if('vulners' in nmScan[host]['tcp'][port]["script"]):
+                        vuln_list.append([host, port, nmScan[host]['tcp'][port]["state"], nmScan[host]['tcp'][port]["name"], nmScan[host]['tcp'][port]["product"], nmScan[host]['tcp'][port]["script"]['vulners']])   
                 else:
-                    vuln_list.append([host, port, nmScan[host]['tcp'][port]["state"], nmScan[host]['tcp'][port]["name"], ""]) 
-        vuln_list.append([host, "", "", "", ""]) 
-    panda.DataFrame(vuln_list, columns=['ipAddress', 'port', 'state', 'name', 'script']).to_json("networkdata/vulns.json", orient="table")
+                    vuln_list.append([host, port, nmScan[host]['tcp'][port]["state"], nmScan[host]['tcp'][port]["name"], nmScan[host]['tcp'][port]["product"], ""]) 
+        vuln_list.append([host, "", "", "", "", ""]) 
+    panda.DataFrame(vuln_list, columns=['ipAddress', 'port', 'state', 'name', 'product', 'script']).to_json("networkdata/vulns.json", orient="table")
 
 
     # vulns hlada super, skusa brutalne vela veci ale dlho to trvaaj 10 minut 

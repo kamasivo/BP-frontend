@@ -15,7 +15,6 @@
               <th scope="col">Vendor</th>
               <th scope="col">OS family</th>
               <th scope="col">OS gen</th>
-              <th scope="col">Number of vulnerabilities</th>
               <th scope="col">Open ports</th>
             </tr>
           </thead>
@@ -30,7 +29,6 @@
           <td>{{ item[4] }}</td>
           <td>{{ item[6] }}</td>
           <td>{{ item[7] }}</td>
-          <td>{{ item[5] }}</td>
           <td>{{ item[8] }}</td>
         </tr>
           </tbody>
